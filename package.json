@@ -1,0 +1,24 @@
+{
+  "name": "webauthn",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:wakeupmh/webauthn.git",
+  "author": "wakeupmh <wakeupmh@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:api": "nodemon src/bin/server.js"
+  },
+  "dependencies": {
+    "@godaddy/terminus": "^4.9.0",
+    "@hapi/boom": "^9.1.4",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
