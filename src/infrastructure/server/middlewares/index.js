@@ -1,3 +1,4 @@
 module.exports = {
-  ...require('./errorHandler')
+  ...require('./errorHandler'),
+  ...require('./validators')
 }

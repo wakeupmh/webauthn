@@ -1,4 +1,5 @@
 module.exports = {
   ...require('./log'),
-  ...require('./server')
+  ...require('./server'),
+  ...require('./storage/db')
 }
