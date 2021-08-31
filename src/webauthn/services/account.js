@@ -21,8 +21,8 @@ module.exports = ({
         
         await repository.createUser(user)
       }
-    
-      req.session.username = username;
+
+      return Promise.resolve(username)
     }
     catch(err) {
       Logger.error(`Error creating user - ${err}`)

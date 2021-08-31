@@ -1,13 +1,16 @@
-const createUser = async (req, res, next) => {
+const createUser = container => async (req, res, next) => {
   const {
-    dependencies: {
-      accountService
-    }
-  } = req;
+    accountService
+  } = container
   
   try {
-    await accountService.createUser(req, res, next)
-    res.status(201)
+    const username = await accountService.createUser(req, res, next)
+
+    req.session = {
+      username
+    }
+
+    return res.sendStatus(201)
   }
   catch (err) {
     next(err)
