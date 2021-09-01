@@ -22,8 +22,21 @@ module.exports = ({
     }
   };
 
+  const updateCurrentChallenge = (username, challenge) => {
+    try {
+      const user = findUser(username);
+      user.currentChallenge = challenge;
+
+      userEntity.find({ username }).assign(user).write();
+    } catch (err) {
+      Logger.error(err);
+      throw err;
+    }
+  };
+
   return {
     findUser,
     createUser,
+    updateCurrentChallenge,
   };
 };
