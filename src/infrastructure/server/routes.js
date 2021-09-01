@@ -10,7 +10,8 @@ const container = require('./container');
 const {
   createUser,
   authUser,
-  registerCredentials,
+  generateRegistration,
+  verifyRegistration,
 } = require('../../webauthn/controller');
 
 router.post('/user', createUser(container));
@@ -19,7 +20,13 @@ router.post(
   '/register-request',
   csrfCheck,
   sessionCheck,
-  registerCredentials(container),
+  generateRegistration(container),
+);
+router.post(
+  '/register-request',
+  csrfCheck,
+  sessionCheck,
+  verifyRegistration(container),
 );
 
 module.exports = router;

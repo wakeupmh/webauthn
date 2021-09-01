@@ -1,8 +1,4 @@
-const createUser = (container) => async (req, res, next) => {
-  const {
-    accountService,
-  } = container;
-
+const createUser = ({ accountService }) => async (req, res, next) => {
   try {
     const username = await accountService.createUser(req, res, next);
 
@@ -16,11 +12,7 @@ const createUser = (container) => async (req, res, next) => {
   }
 };
 
-const authUser = (container) => async (req, res, next) => {
-  const {
-    accountService,
-  } = container;
-
+const authUser = ({ accountService }) => async (req, res, next) => {
   try {
     const username = await accountService.authUser(req, res, next);
 
@@ -29,13 +21,35 @@ const authUser = (container) => async (req, res, next) => {
       'signed-in': true,
     };
 
-    return res.sendStatus(200).json(req.body.user);
+    return res.status(200).json(req.body.user);
   } catch (err) {
-    next(err);
+    return res.status(400).send({ error: err.message });
+  }
+};
+
+const generateRegistration = ({ accountService }) => async (req, res, next) => {
+  try {
+    const options = await accountService.generateRegistration(req, res, next);
+
+    return res.status(200).json(options);
+  } catch (err) {
+    return res.status(400).send({ error: err.message });
+  }
+};
+
+const verifyRegistration = ({ accountService }) => async (req, res, next) => {
+  try {
+    const options = await accountService.verifyRegistration(req, res, next);
+
+    return res.status(200).json(options);
+  } catch (err) {
+    return res.status(400).send({ error: err.message });
   }
 };
 
 module.exports = {
   createUser,
   authUser,
+  generateRegistration,
+  verifyRegistration,
 };

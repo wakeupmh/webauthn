@@ -8,6 +8,7 @@ const {
  * represents the expected URL from which registration or authentication occurs.
  */
 const rpID = 'localhost';
+const expectedOrigin = 'http://localhost:5005';
 
 module.exports = ({
   Logger,
@@ -49,7 +50,7 @@ module.exports = ({
     }
   };
 
-  const registerCredentials = async (req, _, next) => {
+  const generateRegistration = async (req, _, next) => {
     try {
       const {
         username: userName,
@@ -101,14 +102,59 @@ module.exports = ({
 
       return options;
     } catch (err) {
-      Logger.error(`Error registering user ${req.body.username} - ${err.message}`);
+      Logger.error(`Error registering UVA ${req.body.username} - ${err.message}`);
       return next(err);
     }
+  };
+
+  const verifyRegistration = async (req, _, next) => {
+    let verification;
+    let user;
+    const { body } = req;
+
+    try {
+      user = await repository.findUser(req.session.username);
+
+      const opts = {
+        credential: body,
+        expectedChallenge: `${user.currentChallenge}`,
+        expectedOrigin,
+        expectedRPID: rpID,
+      };
+
+      verification = await repository.verifyRegistrationResponse(opts);
+    } catch (err) {
+      Logger.error(`Error validating the register of UVA ${body.username} - ${err.message}`);
+      return next(err);
+    }
+
+    const { verified, registrationInfo } = verification;
+
+    if (verified && registrationInfo) {
+      const { credentialPublicKey, credentialID, counter } = registrationInfo;
+
+      const existingDevice = user.devices.find((device) => device.credentialID === credentialID);
+
+      if (!existingDevice) {
+        /**
+         * Add the returned device to the user's list of devices
+         */
+        const newDevice = {
+          credentialPublicKey,
+          credentialID,
+          counter,
+          transports: body.transports,
+        };
+        user.devices.push(newDevice);
+      }
+    }
+    return verified;
   };
 
   return {
     createUser,
     authUser,
-    registerCredentials,
+    generateRegistration,
+    verifyRegistration,
   };
 };
