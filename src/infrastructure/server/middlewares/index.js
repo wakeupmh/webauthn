@@ -1,4 +1,7 @@
+const errorHandler = require('./errorHandler');
+const validators = require('./validators');
+
 module.exports = {
-  ...require('./errorHandler'),
-  ...require('./validators')
-}
+  ...errorHandler,
+  ...validators,
+};

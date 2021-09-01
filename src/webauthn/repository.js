@@ -1,31 +1,29 @@
 module.exports = ({
   db,
-  Logger
+  Logger,
 }) => {
-  const userEntity = db.get('users')
+  const userEntity = db.get('users');
 
-  const findUser = username => {
+  const findUser = (username) => {
     try {
-      return Promise.resolve(userEntity.find({ username }).value())
+      return Promise.resolve(userEntity.find({ username }).value());
+    } catch (err) {
+      Logger.error(err);
+      throw err;
     }
-    catch (err) {
-      Logger.error(err)
-      throw err
-    }
-  }
+  };
 
-  const createUser = user => {
+  const createUser = (user) => {
     try {
-      return Promise.resolve(userEntity.push(user).write())
+      return Promise.resolve(userEntity.push(user).write());
+    } catch (err) {
+      Logger.error(err);
+      throw err;
     }
-    catch (err) {
-      Logger.error(err)
-      throw err
-    }
-  }
+  };
 
   return {
     findUser,
-    createUser
-  }
-}
+    createUser,
+  };
+};

@@ -1,34 +1,35 @@
 /* istanbul ignore file */
-const { format } = require('winston')
+const { format } = require('winston');
 
 const {
   splat,
   printf,
   combine,
   timestamp,
-  colorize
-} = format
+  colorize,
+} = format;
 
-const colors = () =>
-  colorize({
-    all: true,
-    colors: Object.freeze({
-      trace: 'green',
-      info: 'blue',
-      warn: 'yellow',
-      error: 'red',
-      fatal: 'red'
-    })
-  })
+const colors = () => colorize({
+  all: true,
+  colors: Object.freeze({
+    trace: 'green',
+    info: 'blue',
+    warn: 'yellow',
+    error: 'red',
+    fatal: 'red',
+  }),
+});
 
-const upperCaseLevel = format(info => {
-  info.level = info.level.toUpperCase()
-  return info
-})
+const upperCaseLevel = format((info) => {
+  // eslint-disable-next-line no-param-reassign
+  info.level = info.level.toUpperCase();
+  return info;
+});
 
-const customFormat = () => printf(({ level, message, timestamp, projectLabel }) =>
-  `[${timestamp}] ${level} - [${projectLabel}]: ${message}`
-)
+const customFormat = () => printf(({
+  // eslint-disable-next-line no-shadow
+  level, message, timestamp, projectLabel,
+}) => `[${timestamp}] ${level} - [${projectLabel}]: ${message}`);
 
 const combineLogFormats = (...formats) => combine(
   upperCaseLevel(),
@@ -36,9 +37,9 @@ const combineLogFormats = (...formats) => combine(
   splat(),
   customFormat(),
   colors(),
-  ...formats
-)
+  ...formats,
+);
 
 module.exports = {
-  combineLogFormats
-}
+  combineLogFormats,
+};

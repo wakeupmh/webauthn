@@ -1,40 +1,38 @@
-const http = require('http')
-const { createTerminus } = require('@godaddy/terminus')
-const { apiConfig } = require('../config')
-const { createLog, app } = require('../infrastructure')
+const http = require('http');
+const { createTerminus } = require('@godaddy/terminus');
+const { apiConfig } = require('../config');
+const { createLog, app } = require('../infrastructure');
 
-const server = http.createServer(app)
-const Logger = createLog('bootstrap')
+const server = http.createServer(app);
+const Logger = createLog('bootstrap');
 
 const onSignal = () => {
-  Logger.info('server is starting cleanup')
-  return Promise.resolve()
-}
+  Logger.info('server is starting cleanup');
+  return Promise.resolve();
+};
 
 const onShutdown = () => {
-  Logger.info('cleanup finished, server is shutting down')
-}
+  Logger.info('cleanup finished, server is shutting down');
+};
 
-const onHealthCheck = () => {
-  return Promise.resolve('UP')
-}
+const onHealthCheck = () => Promise.resolve('UP');
 
 const terminusConfiguration = Object.freeze({
   logger: Logger.info,
   signal: 'SIGINT',
   healthChecks: {
-    '/healthcheck': onHealthCheck
+    '/healthcheck': onHealthCheck,
   },
   onSignal,
-  onShutdown
-})
+  onShutdown,
+});
 
-createTerminus(server, terminusConfiguration)
+createTerminus(server, terminusConfiguration);
 
 server.listen(apiConfig.port, (err) => {
   if (err) {
-    Logger.error(err)
-    return
+    Logger.error(err);
+    return;
   }
-  Logger.info(`Magic happens on port ${apiConfig.port} ✨`)
-})
+  Logger.info(`Magic happens on port ${apiConfig.port} ✨`);
+});

@@ -1,11 +1,12 @@
-const express = require('express')
-const router = express.Router()
-const container = require('./container')
+const express = require('express');
+
+const router = express.Router();
+const container = require('./container');
 
 const {
-  createUser
-} = require('../../webauthn/controller')
+  createUser,
+} = require('../../webauthn/controller');
 
-router.post('/user', createUser(container))
+router.post('/user', createUser(container));
 
-module.exports = router
+module.exports = router;

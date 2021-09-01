@@ -1,5 +1,9 @@
+const log = require('./log');
+const server = require('./server');
+const db = require('./storage/db');
+
 module.exports = {
-  ...require('./log'),
-  ...require('./server'),
-  ...require('./storage/db')
-}
+  ...server,
+  ...log,
+  ...db,
+};

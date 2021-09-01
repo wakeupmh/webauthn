@@ -1,4 +1,7 @@
+const application = require('./application');
+const middlewares = require('./middlewares');
+
 module.exports = {
-  ...require('./application'),
-  ...require('./middlewares')
-}
+  ...application,
+  ...middlewares,
+};

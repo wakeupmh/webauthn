@@ -1,22 +1,21 @@
-const createUser = container => async (req, res, next) => {
+const createUser = (container) => async (req, res, next) => {
   const {
-    accountService
-  } = container
-  
+    accountService,
+  } = container;
+
   try {
-    const username = await accountService.createUser(req, res, next)
+    const username = await accountService.createUser(req, res, next);
 
     req.session = {
-      username
-    }
+      username,
+    };
 
-    return res.sendStatus(201)
+    return res.sendStatus(201);
+  } catch (err) {
+    next(err);
   }
-  catch (err) {
-    next(err)
-  }
-}
+};
 
 module.exports = {
-  createUser
-}
+  createUser,
+};
